@@ -142,6 +142,7 @@ class UploadRequest(S3Request):
         # calc the expires headers
         if self.expires:
             headers['Cache-Control'] = self._calc_cache_control()
+            headers['Expires'] = 'Thu, 31 Dec 2037 23:55:55 GMT'
 
         # calc the content type
         headers['Content-Type'] = self.content_type or mimetypes.guess_type(self.key)[0] or 'application/octet-stream'
@@ -197,7 +198,7 @@ class UploadRequest(S3Request):
         else:
             expires = expires
 
-        return "max-age=%d" % self._get_total_seconds(expires) + ', public' if self.public else ''
+        return "max-age=%d" % self._get_total_seconds(expires) #+ ', public' if self.public else ''
 
     def _get_total_seconds(self, timedelta):
         """
